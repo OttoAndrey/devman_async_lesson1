@@ -92,17 +92,17 @@ def draw(canvas):
         with open(f'{rocket_frames_path}{rocket_frames_name}', 'r') as frame:
             frames.append(frame.read())
 
-    coroutine_spaceship = animate_spaceship(canvas, max_rows/2, max_cols/2, frames)
-    coroutine_fire = fire(canvas, max_rows-2, (max_cols-2)/2)
+    spaceship_coroutine = animate_spaceship(canvas, max_rows/2, max_cols/2, frames)
+    fire_coroutine = fire(canvas, max_rows-2, (max_cols-2)/2)
 
-    coroutines.append(coroutine_spaceship)
-    coroutines.append(coroutine_fire)
+    coroutines.append(spaceship_coroutine)
+    coroutines.append(fire_coroutine)
 
     for _ in range(0, 100):
         row = random.randint(1, max_rows-2)
         column = random.randint(1, max_cols-2)
-        coroutine_blink = blink(canvas, row, column, random.choice(stars))
-        coroutines.append(coroutine_blink)
+        blink_coroutine = blink(canvas, row, column, random.choice(stars))
+        coroutines.append(blink_coroutine)
 
     canvas.border()
     

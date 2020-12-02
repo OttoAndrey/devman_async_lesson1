@@ -62,19 +62,19 @@ async def fire(canvas, start_row, start_column, rows_speed=-0.3, columns_speed=0
 async def blink(canvas, row, column, symbol='*'):
     while True:
         canvas.addstr(row, column, symbol, curses.A_DIM)
-        for _ in range(0, 3):
+        for _ in range(3):
             await asyncio.sleep(0)  
 
         canvas.addstr(row, column, symbol)
-        for _ in range(0, 1):
+        for _ in range(1):
             await asyncio.sleep(0)
 
         canvas.addstr(row, column, symbol, curses.A_BOLD)
-        for _ in range(0, random.randint(0, 2)):
+        for _ in range(random.randint(0, 2)):
             await asyncio.sleep(0)
 
         canvas.addstr(row, column, symbol)
-        for _ in range(0, 1):
+        for _ in range(1):
             await asyncio.sleep(0)
 
 
@@ -98,7 +98,7 @@ def draw(canvas):
     coroutines.append(spaceship_coroutine)
     coroutines.append(fire_coroutine)
 
-    for _ in range(0, 100):
+    for _ in range(100):
         row = random.randint(1, max_rows-2)
         column = random.randint(1, max_cols-2)
         blink_coroutine = blink(canvas, row, column, random.choice(stars))

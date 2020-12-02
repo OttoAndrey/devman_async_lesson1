@@ -21,9 +21,9 @@ async def animate_spaceship(canvas, start_row, start_column, frames):
         row += rows_direction
         column += columns_direction
 
-        frame_rows, frames_cols = get_frame_size(frame)
+        frame_rows, frame_cols = get_frame_size(frame)
         max_border_height = height - frame_rows - 1
-        max_border_width = width - frames_cols - 1
+        max_border_width = width - frame_cols - 1
         min_border_height = 1
         min_birder_width = 1
 

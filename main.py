@@ -105,8 +105,9 @@ def draw(canvas):
     rocket_frames_path = 'frames/rocket_frames/'
     rocket_frames_names = os.listdir(rocket_frames_path)
     for rocket_frames_name in rocket_frames_names:
-        with open(f'{rocket_frames_path}{rocket_frames_name}', 'r') as frame:
-            frames.append(frame.read())
+        with open(f'{rocket_frames_path}{rocket_frames_name}', 'r') as file:
+            frame = file.read()
+        frames.extend([frame for _ in range(2)])
 
     spaceship_coroutine = animate_spaceship(canvas, height/2, width/2, frames)
     fire_coroutine = fire(canvas, max_border_height, max_border_width/2)

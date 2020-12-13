@@ -10,6 +10,11 @@ from curses_tools import draw_frame, read_controls, get_frame_size
 
 
 async def animate_spaceship(canvas, start_row, start_column, frames):
+    TOP_BORDER = 1
+    BOTTOM_BORDER = 1
+    LEFT_BORDER = 1
+    RIGHT_BORDER = 1
+
     row, column = start_row, start_column
 
     # canvas.getmaxyx() возвращает длину/ширину окна отрисовки.
@@ -22,10 +27,10 @@ async def animate_spaceship(canvas, start_row, start_column, frames):
         column += columns_direction
 
         frame_rows, frame_cols = get_frame_size(frame)
-        bottom_frame_edge = height - frame_rows - 1
-        right_frame_edge = width - frame_cols - 1
-        top_frame_edge = 1
-        left_frame_edge = 1
+        bottom_frame_edge = height - frame_rows - BOTTOM_BORDER
+        right_frame_edge = width - frame_cols - RIGHT_BORDER
+        top_frame_edge = TOP_BORDER
+        left_frame_edge = LEFT_BORDER
 
         row = median([top_frame_edge, row, bottom_frame_edge])
         column = median([left_frame_edge, column, right_frame_edge])
@@ -87,6 +92,13 @@ async def blink(canvas, row, column, symbol='*'):
 def draw(canvas):
     TIC_TIMEOUT = 0.1
     STARS_NUMBER = 100
+    TOP_BORDER = 1
+    BOTTOM_BORDER = 2
+    LEFT_BORDER = 1
+    RIGHT_BORDER = 2
+    FRAME_CENTER = 2
+    FRAMES_NUMBER = 2
+
     canvas.nodelay(True)
     curses.curs_set(False)
     stars = '*:+.'
@@ -94,10 +106,10 @@ def draw(canvas):
     # canvas.getmaxyx() возвращает длину/ширину окна отрисовки.
     # Поэтому далее определяются переменные-границы для координат.
     height, width = canvas.getmaxyx()
-    bottom_frame_edge = height - 2
-    right_frame_edge = width - 2
-    top_frame_edge = 1
-    left_frame_edge = 1
+    bottom_frame_edge = height - RIGHT_BORDER
+    right_frame_edge = width - BOTTOM_BORDER
+    top_frame_edge = TOP_BORDER
+    left_frame_edge = LEFT_BORDER
 
     coroutines = []
     frames = []
@@ -107,10 +119,10 @@ def draw(canvas):
     for rocket_frames_name in rocket_frames_names:
         with open(f'{rocket_frames_path}{rocket_frames_name}', 'r') as file:
             frame = file.read()
-        frames.extend([frame for _ in range(2)])
+        frames.extend([frame for _ in range(FRAMES_NUMBER)])
 
-    spaceship_coroutine = animate_spaceship(canvas, height/2, width/2, frames)
-    fire_coroutine = fire(canvas, bottom_frame_edge, right_frame_edge/2)
+    spaceship_coroutine = animate_spaceship(canvas, height/FRAME_CENTER, width/FRAME_CENTER, frames)
+    fire_coroutine = fire(canvas, bottom_frame_edge, right_frame_edge/FRAME_CENTER)
 
     coroutines.append(spaceship_coroutine)
     coroutines.append(fire_coroutine)

@@ -22,13 +22,13 @@ async def animate_spaceship(canvas, start_row, start_column, frames):
         column += columns_direction
 
         frame_rows, frame_cols = get_frame_size(frame)
-        max_border_height = height - frame_rows - 1
-        max_border_width = width - frame_cols - 1
-        min_border_height = 1
-        min_birder_width = 1
+        bottom_frame_edge = height - frame_rows - 1
+        right_frame_edge = width - frame_cols - 1
+        top_frame_edge = 1
+        left_frame_edge = 1
 
-        row = median([min_border_height, row, max_border_height])
-        column = median([min_birder_width, column, max_border_width])
+        row = median([top_frame_edge, row, bottom_frame_edge])
+        column = median([left_frame_edge, column, right_frame_edge])
 
         draw_frame(canvas, row, column, frame)
         await asyncio.sleep(0)
@@ -94,10 +94,10 @@ def draw(canvas):
     # canvas.getmaxyx() возвращает длину/ширину окна отрисовки.
     # Поэтому далее определяются переменные-границы для координат.
     height, width = canvas.getmaxyx()
-    max_border_height = height - 2
-    max_border_width = width - 2
-    min_border_height = 1
-    min_birder_width = 1
+    bottom_frame_edge = height - 2
+    right_frame_edge = width - 2
+    top_frame_edge = 1
+    left_frame_edge = 1
 
     coroutines = []
     frames = []
@@ -110,14 +110,14 @@ def draw(canvas):
         frames.extend([frame for _ in range(2)])
 
     spaceship_coroutine = animate_spaceship(canvas, height/2, width/2, frames)
-    fire_coroutine = fire(canvas, max_border_height, max_border_width/2)
+    fire_coroutine = fire(canvas, bottom_frame_edge, right_frame_edge/2)
 
     coroutines.append(spaceship_coroutine)
     coroutines.append(fire_coroutine)
 
     for _ in range(STARS_NUMBER):
-        row = random.randint(min_border_height, max_border_height)
-        column = random.randint(min_birder_width, max_border_width)
+        row = random.randint(top_frame_edge, bottom_frame_edge)
+        column = random.randint(left_frame_edge, right_frame_edge)
         blink_coroutine = blink(canvas, row, column, random.choice(stars))
         coroutines.append(blink_coroutine)
 

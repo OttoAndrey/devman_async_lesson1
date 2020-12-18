@@ -10,10 +10,7 @@ from curses_tools import draw_frame, read_controls, get_frame_size
 
 
 async def animate_spaceship(canvas, start_row, start_column, frames):
-    TOP_BORDER = 1
-    BOTTOM_BORDER = 1
-    LEFT_BORDER = 1
-    RIGHT_BORDER = 1
+    BORDER = 1
 
     row, column = start_row, start_column
 
@@ -27,10 +24,10 @@ async def animate_spaceship(canvas, start_row, start_column, frames):
         column += columns_direction
 
         frame_rows, frame_cols = get_frame_size(frame)
-        bottom_frame_edge = height - frame_rows - BOTTOM_BORDER
-        right_frame_edge = width - frame_cols - RIGHT_BORDER
-        top_frame_edge = TOP_BORDER
-        left_frame_edge = LEFT_BORDER
+        bottom_frame_edge = height - frame_rows - BORDER
+        right_frame_edge = width - frame_cols - BORDER
+        top_frame_edge = BORDER
+        left_frame_edge = BORDER
 
         row = median([top_frame_edge, row, bottom_frame_edge])
         column = median([left_frame_edge, column, right_frame_edge])
@@ -92,10 +89,7 @@ async def blink(canvas, row, column, symbol='*'):
 def draw(canvas):
     TIC_TIMEOUT = 0.1
     STARS_NUMBER = 100
-    TOP_BORDER = 1
-    BOTTOM_BORDER = 2
-    LEFT_BORDER = 1
-    RIGHT_BORDER = 2
+    BORDER = 1
     FRAME_CENTER = 2
     FRAMES_NUMBER = 2
 
@@ -106,10 +100,10 @@ def draw(canvas):
     # canvas.getmaxyx() возвращает длину/ширину окна отрисовки.
     # Поэтому далее определяются переменные-границы для координат.
     height, width = canvas.getmaxyx()
-    bottom_frame_edge = height - RIGHT_BORDER
-    right_frame_edge = width - BOTTOM_BORDER
-    top_frame_edge = TOP_BORDER
-    left_frame_edge = LEFT_BORDER
+    bottom_frame_edge = height - BORDER - 1
+    right_frame_edge = width - BORDER - 1
+    top_frame_edge = BORDER
+    left_frame_edge = BORDER
 
     coroutines = []
     frames = []

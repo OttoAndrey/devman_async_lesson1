@@ -10,7 +10,7 @@ from curses_tools import draw_frame, read_controls, get_frame_size
 
 
 async def animate_spaceship(canvas, start_row, start_column, frames):
-    BORDER = 1
+    border = 1
 
     row, column = start_row, start_column
 
@@ -24,10 +24,10 @@ async def animate_spaceship(canvas, start_row, start_column, frames):
         column += columns_direction
 
         frame_rows, frame_cols = get_frame_size(frame)
-        bottom_frame_edge = height - frame_rows - BORDER
-        right_frame_edge = width - frame_cols - BORDER
-        top_frame_edge = BORDER
-        left_frame_edge = BORDER
+        bottom_frame_edge = height - frame_rows - border
+        right_frame_edge = width - frame_cols - border
+        top_frame_edge = border
+        left_frame_edge = border
 
         row = median([top_frame_edge, row, bottom_frame_edge])
         column = median([left_frame_edge, column, right_frame_edge])
@@ -87,11 +87,11 @@ async def blink(canvas, row, column, symbol='*'):
 
 
 def draw(canvas):
-    TIC_TIMEOUT = 0.1
-    STARS_NUMBER = 100
-    BORDER = 1
-    FRAME_CENTER = 2
-    FRAMES_NUMBER = 2
+    tic_timeout = 0.1
+    stars_number = 100
+    border = 1
+    frame_center = 2
+    frames_number = 2
 
     canvas.nodelay(True)
     curses.curs_set(False)
@@ -100,10 +100,10 @@ def draw(canvas):
     # canvas.getmaxyx() возвращает длину/ширину окна отрисовки.
     # Поэтому далее определяются переменные-границы для координат.
     height, width = canvas.getmaxyx()
-    bottom_frame_edge = height - BORDER - 1
-    right_frame_edge = width - BORDER - 1
-    top_frame_edge = BORDER
-    left_frame_edge = BORDER
+    bottom_frame_edge = height - border - 1
+    right_frame_edge = width - border - 1
+    top_frame_edge = border
+    left_frame_edge = border
 
     coroutines = []
     frames = []
@@ -113,15 +113,15 @@ def draw(canvas):
     for rocket_frames_name in rocket_frames_names:
         with open(f'{rocket_frames_path}{rocket_frames_name}', 'r') as file:
             frame = file.read()
-        frames.extend([frame for _ in range(FRAMES_NUMBER)])
+        frames.extend([frame for _ in range(frames_number)])
 
-    spaceship_coroutine = animate_spaceship(canvas, height/FRAME_CENTER, width/FRAME_CENTER, frames)
-    fire_coroutine = fire(canvas, bottom_frame_edge, right_frame_edge/FRAME_CENTER)
+    spaceship_coroutine = animate_spaceship(canvas, height/frame_center, width/frame_center, frames)
+    fire_coroutine = fire(canvas, bottom_frame_edge, right_frame_edge/frame_center)
 
     coroutines.append(spaceship_coroutine)
     coroutines.append(fire_coroutine)
 
-    for _ in range(STARS_NUMBER):
+    for _ in range(stars_number):
         row = random.randint(top_frame_edge, bottom_frame_edge)
         column = random.randint(left_frame_edge, right_frame_edge)
         blink_coroutine = blink(canvas, row, column, random.choice(stars))
@@ -137,7 +137,7 @@ def draw(canvas):
                 coroutines.remove(coroutine)
 
         canvas.refresh()
-        time.sleep(TIC_TIMEOUT)
+        time.sleep(tic_timeout)
 
 
 if __name__ == '__main__':

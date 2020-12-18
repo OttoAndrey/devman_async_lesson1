@@ -90,7 +90,6 @@ def draw(canvas):
     tic_timeout = 0.1
     stars_number = 100
     border = 1
-    frame_center = 2
     frames_number = 2
 
     canvas.nodelay(True)
@@ -104,6 +103,7 @@ def draw(canvas):
     right_frame_edge = width - border - 1
     top_frame_edge = border
     left_frame_edge = border
+    frame_center = (height - 1) // 2, (width - 1) // 2
 
     coroutines = []
     frames = []
@@ -115,8 +115,8 @@ def draw(canvas):
             frame = file.read()
         frames.extend([frame for _ in range(frames_number)])
 
-    spaceship_coroutine = animate_spaceship(canvas, height/frame_center, width/frame_center, frames)
-    fire_coroutine = fire(canvas, bottom_frame_edge, right_frame_edge/frame_center)
+    spaceship_coroutine = animate_spaceship(canvas, *frame_center, frames)
+    fire_coroutine = fire(canvas, *frame_center)
 
     coroutines.append(spaceship_coroutine)
     coroutines.append(fire_coroutine)
